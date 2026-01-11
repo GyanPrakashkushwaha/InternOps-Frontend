@@ -1,242 +1,273 @@
 const main = document.getElementById("main");
 
-// --- STATE MANAGEMENT ---
-let currentResult = null; // Store API result here
+// --- STATE ---
+let currentResult = null; 
 
-// --- INITIAL RENDER ---
+// --- INIT ---
 function init() {
-    main.innerHTML = ""; // Clear
+    main.innerHTML = "";
     
-    // 1. Surface Card
+    // Create Layout
     const surface = document.createElement("div");
     surface.className = "surface";
-    surface.id = "surface-card";
-
-    // 2. Header
+    
+    // Header
     const header = document.createElement("div");
     header.className = "header";
     header.innerHTML = `
-        <img src="assets/logo-removebg.png" alt="InternOps" class="logo-img">
+        <img src="assets/logo-removebg.png" alt="Logo" class="logo-img">
         <div class="header-text">
             <h1>InternOps</h1>
-            <p>Smart Filter Extension</p>
+            <p>Smart Resume Filter</p>
         </div>
     `;
-
-    // 3. Input View Container
-    const inputView = document.createElement("div");
-    inputView.id = "input-view";
-    inputView.className = "control-stack";
     
+    // Input View
+    const inputView = document.createElement("div");
+    inputView.className = "input-view";
+    inputView.id = "input-view";
     inputView.innerHTML = `
         <div class="select-wrapper">
-            <label for="mode">Select Strategy</label>
-            <select name="mode" id="mode">
-                <option value="strict">Strict Mode</option>
+            <label>Analysis Strategy</label>
+            <select id="mode">
+                <option value="strict">Strict Mode (ATS Heavy)</option>
                 <option value="real-world" selected>Real World Scenario</option>
-                <option value="brutal">Brutal Mode</option>
+                <option value="brutal">Brutal Mode (FAANG)</option>
             </select>
         </div>
-        <button id="analyze">Analyze Resume</button>
+        
+        <div style="text-align: center; margin-top: 10px;">
+            <p style="font-size: 12px; color: var(--text-tertiary);">
+                Analyze current page context against 50+ parameters.
+            </p>
+        </div>
+
+        <button id="analyze" class="btn-primary">Analyze Resume</button>
     `;
 
-    // 4. Result View Container (Starts empty & hidden)
+    // Results View (Hidden initially)
     const resultView = document.createElement("div");
+    resultView.className = "results-container hidden";
     resultView.id = "result-view";
-    resultView.className = "hidden"; 
 
-    // Assemble
     surface.appendChild(header);
     surface.appendChild(inputView);
     surface.appendChild(resultView);
     main.appendChild(surface);
 
-    // Event Listeners
-    // NOTE: In extensions, always add listeners in JS, never in HTML onclick=""
-    document.getElementById("analyze").addEventListener("click", handleAnalyzeClick);
+    document.getElementById("analyze").addEventListener("click", handleAnalyze);
 }
 
 // --- LOGIC ---
-
-async function handleAnalyzeClick() {
+async function handleAnalyze() {
     const btn = document.getElementById("analyze");
     const originalText = btn.innerText;
-
-    // Loading State
+    
     btn.classList.add("loading");
-    btn.innerHTML = `<span class="spinner"></span> AI Analysis...`;
-
-    // Fetch Result
+    btn.innerHTML = `<span class="spinner"></span> Analyzing...`;
+    
+    // Simulate API Call (Replace with real fetch)
     const data = await fetchResult(8); 
 
-    if (data) {
+    if(data && data.final_result) {
         currentResult = data.final_result;
         transitionToResults();
     } else {
-        btn.innerText = "Error";
-        setTimeout(() => { 
+        btn.innerText = "Analysis Failed";
+        setTimeout(() => {
+            btn.innerHTML = originalText;
             btn.classList.remove("loading");
-            btn.innerText = originalText; 
         }, 2000);
     }
 }
 
 function transitionToResults() {
-    const inputView = document.getElementById("input-view");
+    document.getElementById("input-view").classList.add("hidden");
     const resultView = document.getElementById("result-view");
-    
-    // Hide inputs
-    inputView.classList.add("hidden");
-    
-    // Show Results
     resultView.classList.remove("hidden");
-    renderResultUI();
+    
+    renderResultStructure();
 }
 
-function renderResultUI() {
+function renderResultStructure() {
     const container = document.getElementById("result-view");
     
-    // 1. Create Layout with ID-based buttons
     container.innerHTML = `
-        <div class="tabs-container">
-            <button id="tab-ats" class="tab-btn active" data-target="ats">ATS Check</button>
-            <button id="tab-recruiter" class="tab-btn" data-target="recruiter">Recruiter</button>
-            <button id="tab-hm" class="tab-btn" data-target="hm">Engineering</button>
+        <div class="tabs-header">
+            <button class="tab-btn active" data-tab="ats">ATS Scan</button>
+            <button class="tab-btn" data-tab="recruiter">Recruiter</button>
+            <button class="tab-btn" data-tab="hm">Engineering</button>
         </div>
-        <div id="tab-content" class="result-pane">
+        <div id="tab-content" class="scroll-content">
             </div>
-        <button id="reset">Analyze Another</button>
     `;
 
-    // 2. Attach Event Listeners (Crucial for Chrome Extensions)
-    document.getElementById("tab-ats").addEventListener("click", () => switchTab('ats'));
-    document.getElementById("tab-recruiter").addEventListener("click", () => switchTab('recruiter'));
-    document.getElementById("tab-hm").addEventListener("click", () => switchTab('hm'));
-
-    // Bind Reset
-    document.getElementById("reset").addEventListener("click", () => {
-        location.reload(); 
+    // Tab Listeners
+    container.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            renderTabContent(e.target.dataset.tab);
+        });
     });
 
-    // Default Tab
+    // Initial Render
     renderTabContent('ats');
 }
 
-function switchTab(tabName) {
-    // 1. Visual: Update Active Button State
-    // We use data-target to ensure we toggle the exact right button
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => {
-        if (btn.dataset.target === tabName) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-
-    // 2. Content: Render the data
-    renderTabContent(tabName);
-}
-
 function renderTabContent(tabName) {
-    const content = document.getElementById("tab-content");
+    const contentDiv = document.getElementById("tab-content");
     let html = "";
     
-    // Helper: Create colored badge
-    const getBadge = (decision) => {
-        const cls = (decision === "PASS" || decision === "HIRE") ? "badge-pass" : "badge-fail";
-        return `<span class="decision-badge ${cls}">${decision}</span>`;
-    };
-
-    // --- LOGIC MAPPING ---
     if (tabName === 'ats') {
         const data = currentResult.ats_result;
         html = `
-            <div class="score-row">
-                <div>
-                    <div class="score-label">Match Score</div>
-                    <div class="big-score" style="color: #8b5cf6">${data.match_score}%</div>
-                </div>
-                ${getBadge(data.decision)}
-            </div>
+            ${renderScoreCard("ATS Match Score", data.match_score, data.decision)}
             
-            <div class="section-title">Missing Keywords</div>
-            <div class="pill-container">
-                ${data.missing_keywords.length > 0 
-                    ? data.missing_keywords.map(k => `<span class="pill missing">${k}</span>`).join('') 
-                    : '<span class="pill">None! Good job.</span>'}
+            <div class="card">
+                <span class="section-label">Missing Keywords</span>
+                <div class="pill-wrap">
+                    ${data.missing_keywords.length ? 
+                      data.missing_keywords.map(k => `<span class="pill pill-danger">${k}</span>`).join('') : 
+                      '<span class="pill pill-success">All Keywords Found</span>'}
+                </div>
             </div>
 
-            <div class="section-title">ATS Feedback</div>
-            <div class="text-block">${data.feedback}</div>
+            <div class="card">
+                <span class="section-label">Formatting Check</span>
+                ${data.formatting_issues && data.formatting_issues.length > 0 ? 
+                  `<ul class="markdown-body" style="color: var(--danger)">${data.formatting_issues.map(i => `<li>${i}</li>`).join('')}</ul>` : 
+                  '<div class="pill-wrap"><span class="pill pill-success">No Formatting Errors</span></div>'}
+            </div>
+
+            <div class="card">
+                <span class="section-label">Detailed Feedback</span>
+                <div class="markdown-body">${parseMarkdown(data.feedback)}</div>
+            </div>
         `;
     } 
     else if (tabName === 'recruiter') {
         const data = currentResult.recruiter_result;
         html = `
-            <div class="score-row">
-                <div>
-                    <div class="score-label">Career Progression</div>
-                    <div class="big-score" style="color: #f59e0b">${data.career_progression_score}/100</div>
-                </div>
-                ${getBadge(data.decision)}
-            </div>
+            ${renderScoreCard("Career Progression", data.career_progression_score, data.decision)}
             
-            <div class="section-title">Soft Skills Detected</div>
-            <div class="pill-container">
-                ${data.soft_skills_detected.map(s => `<span class="pill">${s}</span>`).join('')}
+            ${data.red_flags && data.red_flags.length > 0 ? `
+            <div class="card" style="border-left: 4px solid var(--danger);">
+                <span class="section-label" style="color: var(--danger)">🚩 Red Flags Detected</span>
+                <ul class="markdown-body">${data.red_flags.map(f => `<li>${f}</li>`).join('')}</ul>
+            </div>` : ''}
+
+            <div class="card">
+                <span class="section-label">Soft Skills</span>
+                <div class="pill-wrap">
+                    ${data.soft_skills_detected.map(s => `<span class="pill pill-neutral">${s}</span>`).join('')}
+                </div>
             </div>
 
-            <div class="section-title">Recruiter Notes</div>
-            <div class="text-block">${data.feedback}</div>
+            <div class="card">
+                <span class="section-label">Recruiter Impressions</span>
+                <div class="markdown-body">${parseMarkdown(data.feedback)}</div>
+            </div>
         `;
     } 
     else if (tabName === 'hm') {
         const data = currentResult.hm_result;
         html = `
-            <div class="score-row">
+            <div class="card hero-stats">
                 <div>
-                    <div class="score-label">Tech Depth</div>
-                    <div class="big-score" style="color: #10b981">${data.tech_depth_score}</div>
+                    <span class="section-label">Tech Depth</span>
+                    <div style="font-size: 24px; font-weight: 800; color: ${getColor(data.tech_depth_score)}">${data.tech_depth_score}</div>
                 </div>
-                 <div>
-                    <div class="score-label">Impact</div>
-                    <div class="big-score" style="color: #0ea5e9">${data.project_impact_score}</div>
+                <div style="width: 1px; height: 30px; background: var(--border);"></div>
+                <div>
+                    <span class="section-label">Impact</span>
+                    <div style="font-size: 24px; font-weight: 800; color: ${getColor(data.project_impact_score)}">${data.project_impact_score}</div>
                 </div>
-                ${getBadge(data.decision)}
-            </div>
-            
-            <div class="section-title">Stack Alignment</div>
-            <div class="text-block" style="border-left: 3px solid #10b981; background: var(--bg-surface);">
-                ${data.stack_alignment}
+                <div>${renderBadge(data.decision)}</div>
             </div>
 
-            <div class="section-title">Engineering Lead Feedback</div>
-            <div class="text-block">${data.feedback.replace(/\n/g, '<br>')}</div>
+            <div class="card">
+                <span class="section-label">Stack Alignment</span>
+                <div class="markdown-body" style="font-style: italic; border-left: 3px solid var(--primary); padding-left: 10px;">
+                    ${data.stack_alignment}
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="section-label">Engineering Lead Notes</span>
+                <div class="markdown-body">${parseMarkdown(data.feedback)}</div>
+            </div>
         `;
     }
 
-    // Inject with fade animation
-    content.innerHTML = html;
+    // Append Reset Button at bottom of content
+    html += `<button id="reset" class="btn-secondary">Analyze Another Candidate</button>`;
     
-    // Trigger animation restart
-    content.classList.remove('result-pane');
-    void content.offsetWidth; // trigger reflow
-    content.classList.add('result-pane');
+    contentDiv.innerHTML = html;
+    
+    // Re-bind reset
+    document.getElementById("reset").addEventListener("click", () => location.reload());
+}
+
+// --- HELPERS ---
+
+// 1. Simple Markdown Parser for Bold and Lists
+function parseMarkdown(text) {
+    if (!text) return "";
+    let clean = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+        .replace(/\n\d+\.\s/g, '<br><br>• ') // Numbered lists to bullets for cleaner look
+        .replace(/\n/g, '<br>'); // Line breaks
+    return clean;
+}
+
+// 2. Score Color Logic
+function getColor(score) {
+    if (score >= 90) return 'var(--success)';
+    if (score >= 70) return 'var(--warning)';
+    return 'var(--danger)';
+}
+
+// 3. Status Badge
+function renderBadge(decision) {
+    let cls = decision === 'HIRE' ? 'bg-hire' : (decision === 'PASS' ? 'bg-pass' : 'bg-fail');
+    return `<span class="status-badge ${cls}">${decision}</span>`;
+}
+
+// 4. SVG Circular Score Component
+function renderScoreCard(label, score, decision) {
+    const color = getColor(score);
+    // SVG calc for circle stroke (radius 15.9155 circumference is 100)
+    const dashArray = `${score}, 100`; 
+    
+    return `
+    <div class="card" style="display:flex; align-items:center; gap: 16px;">
+        <div style="width: 60px; height: 60px; flex-shrink: 0;">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path class="circle" stroke="${color}" stroke-dasharray="${dashArray}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <text x="18" y="20.35" class="percentage">${score}</text>
+            </svg>
+        </div>
+        <div style="flex:1;">
+            <span class="section-label">${label}</span>
+            <div style="font-weight: 500; font-size: 13px; color: var(--text-secondary);">
+                Analysis Result: ${renderBadge(decision)}
+            </div>
+        </div>
+    </div>
+    `;
 }
 
 // --- API ---
 async function fetchResult(analysisId){
     try{
         const res = await fetch(`http://localhost:8000/analysis_result/${analysisId}`);
-        const data = await res.json()
-        console.log("Final Result:", data);
-        return data;
-    }catch(error){
+        return await res.json();
+    } catch(error){
         console.error(error);
         return null;
     }
 }
 
-// Run
 init();
