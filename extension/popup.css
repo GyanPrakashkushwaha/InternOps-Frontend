@@ -65,7 +65,7 @@
 
 body {
     width: 360px;
-    height: 370px; 
+    height: 350px; 
     background-color: var(--bg-body);
     padding: 0;
     overflow: hidden;
@@ -395,3 +395,43 @@ button.loading { opacity: 0.8; pointer-events: none; cursor: wait; }
 }
 
 .hidden { display: none !important; }
+
+/* ---------------------------------------------------- */
+/* --- NEW: File Input Styling (Matches UI Context) --- */
+/* ---------------------------------------------------- */
+
+.custom-file-input {
+    width: 100%;
+    padding: 10px; /* Adjusted padding as file inputs contain internal buttons */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+    background-color: var(--input-bg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.custom-file-input:hover {
+    border-color: var(--border-hover);
+    background-color: var(--input-hover);
+}
+
+/* Styles specifically for the "Choose File" button inside the input */
+.custom-file-input::-webkit-file-upload-button {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 12px;
+    margin-right: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.custom-file-input::-webkit-file-upload-button:hover {
+    background: var(--border);
+}
