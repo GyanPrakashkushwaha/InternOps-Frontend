@@ -1,0 +1,36 @@
+{
+  "status": "Completed",
+  "final_result": {
+    "ats_result": {
+      "match_score": 97,
+      "missing_keywords": [
+        "Responsible AI",
+        "ethics",
+        "algorithmic fairness",
+        "Behavioral Analytics",
+        "customer segmentation"
+      ],
+      "formatting_issues": [],
+      "decision": "PASS",
+      "feedback": "Your resume demonstrates exceptional technical proficiency and project experience highly relevant to the Data Science & AI Intern role. To further enhance ATS readability and align with the JD's specific emphasis, consider explicitly incorporating keywords such as 'Responsible AI', 'ethics', 'algorithmic fairness', and 'Behavioral Analytics' by framing your existing project work (e.g., reducing LLM hallucinations, customer churn prediction) within these contexts. Additionally, if applicable, explicitly mention 'customer segmentation' or how your predictive modeling experience relates to it. Highlighting your interest in AdTech & MarTech, if relevant, could also be beneficial."
+    },
+    "recruiter_result": {
+      "career_progression_score": 85,
+      "red_flags": [],
+      "soft_skills_detected": [
+        "Communication",
+        "Technical Leadership",
+        "User Empathy"
+      ],
+      "decision": "PASS",
+      "feedback": "Gyan demonstrates exceptional technical prowess and a strong project portfolio for an undergraduate. The progression is evident in the complexity and impact of the projects undertaken. To further enhance the narrative, consider explicitly articulating the 'why' behind project choices and the broader impact on users or simulated business scenarios. For instance, when discussing the 'Customer Churn Predictor', elaborate on how the real-time assessments could inform business strategy or improve customer retention. Similarly, for 'CropGuardian-AI', emphasize the potential real-world agricultural benefits. Highlighting any instances of collaboration, even in academic settings, or how you navigated challenges beyond technical implementation would also strengthen your story."
+    },
+    "hm_result": {
+      "tech_depth_score": 92,
+      "project_impact_score": 93,
+      "stack_alignment": "Excellent. The candidate's skills and project experience align almost perfectly with the JD's requirements and bonus points. They demonstrate strong proficiency in Python, SQL, ML libraries (scikit-learn, PyTorch, TensorFlow), GenAI/LLMs (LangGraph, Gemini), cloud platforms (AWS/GCP), Git, and data visualization tools (Power BI, Matplotlib, Seaborn). Their projects directly address key responsibilities such as developing recommendation engines, predictive modeling, LLM integrated analytics, and modular data pipelines.",
+      "decision": "HIRE",
+      "feedback": "The candidate's bullet points are exceptionally strong, clearly demonstrating action, technology, and quantifiable impact. To elevate them further and showcase even deeper technical prowess, consider incorporating the following:\n1.  **Elaborate on Technical Challenges & Solutions:** For instance, in the 'YouTube RAG Chatbot' project, when mentioning 'engineering a real-time async streaming pipeline,' briefly describe a specific technical hurdle encountered (e.g., managing concurrent requests, ensuring data consistency across distributed components) and how it was overcome to achieve the <500ms TTFT.\n2.  **Highlight Design Decisions & Trade-offs:** For 'CropGuardian-AI' and '100% schema compliance,' explain the specific prompt engineering strategies or validation mechanisms implemented to robustly enforce structured output from the LLM, especially for complex or nested Pydantic schemas. This shows a deeper understanding of LLM interaction and error handling.\n3.  **Scale and Performance Considerations:** For projects like 'Customer Churn Predictor' (100,000 records) or 'Movie Recommender System' (5,000-feature model), briefly touch upon any data engineering challenges (e.g., handling imbalanced datasets, feature scaling at scale) or performance optimizations beyond just 'Pickle serialization' that were critical for efficiency.\n4.  **Address 'Why' Behind Choices:** Where applicable, briefly explain the rationale for a specific technical choice. For example, 'Chose Maximal Marginal Relevance (MMR) over standard similarity search to explicitly address semantic redundancy in long documents, thereby improving RAG accuracy by 90%.'\n5.  **Responsible AI (JD Specific):** Given the job description's emphasis on Responsible AI, if any project involved considerations for bias, fairness, or transparency (e.g., in model selection for churn prediction, or data filtering for RAG), briefly mentioning these aspects would be a significant differentiator."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "InternOps",
+  "version": "0.1",
+  "author": "Gyan Prakash Kushwaha",
+  "description": "Interns Getting Shortlisted",
+  "permissions": [
+    ""
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js",
+        "script.js"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources" : [
+    {
+      "resources": [],
+      "matches" : ["<all_urls>"]
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "16": "assets/logo-removebg.png",
+      "24": "assets/logo-removebg.png",
+      "32": "assets/logo-removebg.png"
+    },
+    "default_popup": "popup.html",
+    "default_title": "A tooltip popup description when you hover over the Chrome Extension icon."
+  }
+}
