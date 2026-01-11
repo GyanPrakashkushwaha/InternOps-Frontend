@@ -2,7 +2,7 @@ const main = document.getElementById("main");
 
 // --- STATE ---
 let currentResult = null; 
-
+const ANALYSIS_ID = 8
 // --- INIT ---
 function init() {
     // Ensure body starts in small mode
@@ -40,12 +40,12 @@ function init() {
         </div>
         
         <div style="text-align: center; margin-top: 10px;">
-            <p style="font-size: 12px; color: var(--text-tertiary);">
-                Analyze current page context against 50+ parameters.
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                Analyze current page context against 50+ parameters using our advanced AI engine.
             </p>
         </div>
 
-        <button id="analyze" class="btn-primary">Analyze Resume</button>
+        <button id="analyze">Analyze Resume</button>
     `;
 
     // Results View (Hidden initially)
@@ -70,7 +70,7 @@ async function handleAnalyze() {
     btn.innerHTML = `<span class="spinner"></span> Analyzing...`;
     
     // Simulate API Call (Replace with real fetch)
-    const data = await fetchResult(8); 
+    const data = await fetchResult(ANALYSIS_ID); 
 
     if(data && data.final_result) {
         currentResult = data.final_result;
@@ -89,16 +89,43 @@ function transitionToResults() {
     document.body.classList.add('expanded');
 
     document.getElementById("input-view").classList.add("hidden");
+    document.querySelector(".header").classList.add("hidden");
+
     const resultView = document.getElementById("result-view");
     resultView.classList.remove("hidden");
-    
     renderResultStructure();
+}
+
+function handleBack() {
+    // 1. Shrink window
+    document.body.classList.remove('expanded');
+    
+    // 2. Toggle Views
+    document.getElementById("result-view").classList.add("hidden");
+    document.querySelector(".header").classList.remove("hidden");
+
+    const inputView = document.getElementById("input-view");
+    inputView.classList.remove("hidden");
+    
+    // 3. Reset Button State
+    const btn = document.getElementById("analyze");
+    btn.innerText = "Analyze Resume";
+    btn.classList.remove("loading");
 }
 
 function renderResultStructure() {
     const container = document.getElementById("result-view");
     
+    // Note the added 'nav-header-row' with the back button
     container.innerHTML = `
+        <div class="nav-header-row">
+            <button id="back-btn" class="nav-btn" title="Back to Analyze">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+        </div>
+
         <div class="tabs-header">
             <button class="tab-btn active" data-tab="ats">ATS Scan</button>
             <button class="tab-btn" data-tab="recruiter">Recruiter</button>
@@ -107,6 +134,9 @@ function renderResultStructure() {
         <div id="tab-content" class="scroll-content">
             </div>
     `;
+
+    // Back Button Listener
+    document.getElementById("back-btn").addEventListener("click", handleBack);
 
     // Tab Listeners
     container.querySelectorAll('.tab-btn').forEach(btn => {
@@ -158,7 +188,7 @@ function renderTabContent(tabName) {
             ${renderScoreCard("Career Progression", data.career_progression_score, data.decision)}
             
             ${data.red_flags && data.red_flags.length > 0 ? `
-            <div class="card" style="border-left: 4px solid var(--danger);">
+            <div class="card" style="border-left: 3px solid var(--danger);">
                 <span class="section-label" style="color: var(--danger)">🚩 Red Flags Detected</span>
                 <ul class="markdown-body">${data.red_flags.map(f => `<li>${f}</li>`).join('')}</ul>
             </div>` : ''}
@@ -194,7 +224,7 @@ function renderTabContent(tabName) {
 
             <div class="card">
                 <span class="section-label">Stack Alignment</span>
-                <div class="markdown-body" style="font-style: italic; border-left: 3px solid var(--primary); padding-left: 10px;">
+                <div class="markdown-body" style="font-style: italic; border-left: 3px solid var(--primary); padding-left: 12px; color: var(--text-muted);">
                     ${data.stack_alignment}
                 </div>
             </div>
@@ -205,45 +235,33 @@ function renderTabContent(tabName) {
             </div>
         `;
     }
-
-    // Append Reset Button at bottom of content
-    html += `<button id="reset" class="btn-secondary">Analyze Another Candidate</button>`;
-    
     contentDiv.innerHTML = html;
-    
-    // Re-bind reset
-    document.getElementById("reset").addEventListener("click", () => location.reload());
 }
 
 // --- HELPERS ---
 
-// 1. Simple Markdown Parser for Bold and Lists
 function parseMarkdown(text) {
     if (!text) return "";
     let clean = text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
-        .replace(/\n\d+\.\s/g, '<br><br>• ') // Numbered lists to bullets for cleaner look
-        .replace(/\n/g, '<br>'); // Line breaks
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\d+\.\s/g, '<br><br>• ')
+        .replace(/\n/g, '<br>');
     return clean;
 }
 
-// 2. Score Color Logic
 function getColor(score) {
     if (score >= 90) return 'var(--success)';
     if (score >= 70) return 'var(--warning)';
     return 'var(--danger)';
 }
 
-// 3. Status Badge
 function renderBadge(decision) {
-    let cls = decision === 'HIRE' ? 'bg-hire' : (decision === 'PASS' ? 'bg-pass' : 'bg-fail');
-    return `<span class="status-badge ${cls}">${decision}</span>`;
+    let colorVar = decision === 'HIRE' ? 'var(--primary)' : (decision === 'PASS' ? 'var(--success)' : 'var(--danger)');
+    return `<span style="color: ${colorVar}; font-weight: 700; font-size: 14px;">${decision}</span>`;
 }
 
-// 4. SVG Circular Score Component
 function renderScoreCard(label, score, decision) {
     const color = getColor(score);
-    // SVG calc for circle stroke (radius 15.9155 circumference is 100)
     const dashArray = `${score}, 100`; 
     
     return `
@@ -252,13 +270,13 @@ function renderScoreCard(label, score, decision) {
             <svg viewBox="0 0 36 36" class="circular-chart">
                 <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                 <path class="circle" stroke="${color}" stroke-dasharray="${dashArray}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <text x="18" y="20.35" class="percentage">${score}</text>
+                <text x="18" y="23.35" style="font-size:13px" class="percentage">${score}</text>
             </svg>
         </div>
         <div style="flex:1;">
-            <span class="section-label">${label}</span>
-            <div style="font-weight: 500; font-size: 13px; color: var(--text-secondary);">
-                Analysis Result: ${renderBadge(decision)}
+            <span class="section-label" style="margin-bottom:4px;">${label}</span>
+            <div style="font-weight: 500; font-size: 13px; color: var(--text-muted);">
+                Result: ${renderBadge(decision)}
             </div>
         </div>
     </div>
