@@ -1,7 +1,7 @@
 const main = document.getElementById("main");
 
 // --- STATE ---
-let currentResult = null; 
+let currentResult = null;
 const ANALYSIS_ID = 43
 
 // --- INIT ---
@@ -148,6 +148,8 @@ function renderResultStructure() {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
             </button>
+            
+            <button id="open-chat-btn" class="nav-action-btn">Open chat in new tab</button>
         </div>
 
         <div class="tabs-header">
@@ -161,6 +163,11 @@ function renderResultStructure() {
 
     // Back Button Listener
     document.getElementById("back-btn").addEventListener("click", handleBack);
+
+    // NEW BUTTON LISTENER
+    document.getElementById("open-chat-btn").addEventListener("click", () => {
+        window.open("http://localhost:5173/", "_blank");
+    });
 
     // Tab Listeners
     container.querySelectorAll('.tab-btn').forEach(btn => {
@@ -333,76 +340,70 @@ async function analyzeResume() {
   }
 
   const jobDescription = `        
-  Job Description:                
-    Job Title: Data Science and AI Intern  
+About the work from home job/internship
+ServiceHive is looking for a 'GenAI Engineer Intern' to join the team building Inflx, our AI-powered social media automation product. This is a hands-on, high-impact internship where you'll work on building and improving conversational AI agents that automate social media interactions across Instagram, Facebook, Twitter/X, LinkedIn, and websites.
 
-Company: GEODISHA 
+You'll work closely with our Senior Data Scientist (8+ years experience) and engineering team to learn real-world agent architectures and contribute directly to production systems used by real businesses. This internship is designed for candidates who want deep exposure to GenAI, LLMs, and AI agents, not just theoretical learning.
 
-Location: Hyderabad - Onsite 
+As a 'GenAI Engineer Intern,' your mission is to help build and improve AI agents that talk to users at scale. You'll assist in designing conversation flows, improving prompts, implementing agent logic, and analyzing conversations to continuously improve agent quality.
 
-Duration: 1- 4 Months 
+Selected intern's day-to-day responsibilites include:
 
-About GEODISHA 
+A. Core Agent Development (Primary Focus - ~70%)
+1. Assist in building conversational AI agents for Inflx
+2. Design and test multi-turn conversation flows
+3. Improve and experiment with prompt engineering strategies
+4. Work with LLMs (GPT-4, Claude, Gemini, open-source models)
+5. Assist in intent detection, entity extraction, and sentiment handling
+6. Help implement conversation memory and context management
+7. Test agent responses and improve conversation quality
 
-At GEODISHA, we are at the forefront of Data Analytics and AI, leveraging data to solve  complex problems and drive innovation. Our team is a dedicated group of researchers, engineers,  and strategists who believe in the power of technology. We are passionately committed to  developing cutting-edge AI that is not only powerful but also ethical, transparent, and fair. We're  looking for the next generation of innovators to join us. 
+B. Backend & Integration Support (~20%)
+1. Assist in integrating agents with backend APIs
+2. Work with social media APIs and webhooks
+3. Help implement lead capture, FAQs, and routing logic
+4. Write basic tests and help debug production issues
 
-The Opportunity: This Isn't Your Typical Internship 
+C. Learning & Collaboration (~10%)
+1. Learn directly from Senior Data Scientist and Backend Engineer
+2. Participate in code reviews and technical discussions
+3. Document prompts, agent logic, and learnings
+Skill(s) required
+Artificial intelligence
+Cursor (GenAI)
+Data Science
+Deep Learning
+Generative AI Tools
+Machine Learning
+Natural Language Processing (NLP)
+Python
+Earn certifications in these skills
+Learn Artificial intelligence
+Learn Cursor (GenAI)
+Learn Data Science
+Learn Deep Learning
+Learn Generative AI Tools
+Learn Machine Learning
+Learn NLP
++ 1 more skills
+Who can apply
 
-We are seeking truly exceptional interns to join our core Data & AI team. This is a unique  opportunity to move beyond theory and apply your skills to high-impact, real-world challenges  across the full data lifecycle. 
+Only those candidates can apply who: 
 
-You won't be on the sidelines. You'll be paired with a senior mentor and embedded directly into  projects at the intersection of data engineering, data analytics, artificial intelligence, and human  behavior. We are looking for a candidate who is not just an outstanding programmer, but a  critical thinker who understands that great AI starts with great data, is passionate about the  "why" behind the data, and sees the critical importance of building Responsible AI. 
+1. are available for the work from home job/internship
 
-What You’ll Do (Key Responsibilities): 
+2. can start the work from home job/internship between 9th Jan'26 and 13th Feb'26
 
-∉ Assist in developing AI-driven recommendation engines and personalization workflows. ∉ Analyze structured and unstructured datasets to derive insights and patterns. ∉ Work with senior team members on customer segmentation, predictive modeling, and LLM integrated analytics tools. 
+3. are available for duration of 6 months
 
-∉ Learn and support the development of modular data pipelines and models using industry  tools. 
+4. have relevant skills and interests
 
-∉ Use Python, SQL, scikit-learn, and other libraries for experimentation and development. ∉ Present findings through visualization tools such as seaborn, matplotlib, or BI tools like  Power BI. 
+* Women wanting to start/restart their career can also apply.
 
-∉ Document code, experiments, and insights for further development. 
+Other requirements
+1. Students from tier 1 universities preferred.
 
-Who You Are (Our Ideal Candidate):
-
-We are looking for a rising star who is driven, curious, and eager to make a tangible impact. 
-
-Core Requirements: 
-
-∉ Currently pursuing, recently completed a degree in Data Science, Computer Science,  Statistics, Mathematics, or related field. 
-
-∉ Good understanding of Python and SQL (R is a plus). 
-
-∉ Familiarity with basic ML algorithms: classification, regression, clustering. ∉ Exposure to libraries such as pandas, NumPy, scikit-learn, etc. 
-
-∉ Interest in GenAI/NLP concepts like transformers or LLMs is a bonus. ∉ Strong analytical mindset, curiosity, and willingness to learn. 
-
-Passion & Interest (What Sets You Apart): 
-
-∉ A genuine and demonstrable passion for the entire Data Analytics space, from robust  engineering to insightful analysis. 
-
-∉ Academic or project-based exposure to Behavioral Analytics or computational social  science. 
-
-∉ A strong, well-articulated interest in the field of Responsible AI, ethics, and algorithmic  fairness 
-
-Bonus Points: 
-
-∉ Exposure to tools like TensorFlow, Hugging Face, or BI dashboards. 
-
-∉ Basic understanding of cloud platforms (AWS/GCP/Azure), Git, or APIs. ∉ Academic projects, personal experiments, or GitHub repositories demonstrating interest in  AI/ML. 
-
-What You’ll Gain: 
-
-● Hands-on experience in a startup environment working on cutting-edge AdTech & MarTech  products. 
-
-● Mentorship from senior Data Science and AI professionals. 
-
-● A chance to convert the internship into a full-time position based on performance.
-
-Type of Opportunity: Internship 
-
-Job Title: Data Science & AI Intern
-
-
+2. Students who can devote 40 hours a week would be preferred.
   `;
 
   const formData = new FormData();
@@ -473,4 +474,3 @@ async function pollAPI(url, interval = 1000, timeout = 20000) {
 async function pollResult(url) {
   return pollAPI(url, 4000, 60000);
 }
-

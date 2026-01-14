@@ -435,3 +435,26 @@ button.loading { opacity: 0.8; pointer-events: none; cursor: wait; }
 .custom-file-input::-webkit-file-upload-button:hover {
     background: var(--border);
 }
+
+/* --- ADDED NAV BUTTON STYLE --- */
+.nav-action-btn {
+    padding: 0 12px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-action-btn:hover {
+    background: var(--bg-card);
+    color: var(--primary);
+    border-color: var(--primary);
+}
