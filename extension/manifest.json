@@ -5,17 +5,14 @@
   "author": "Gyan Prakash Kushwaha",
   "description": "Interns Getting Shortlisted",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage",
+    "scripting"
   ],
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js",
-        "script.js"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
   ],
   "background": {

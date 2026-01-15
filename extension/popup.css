@@ -304,6 +304,40 @@ button.loading { opacity: 0.8; pointer-events: none; cursor: wait; }
     padding-right: 4px; 
 }
 
+
+/* --- Add this to popup.css --- */
+
+textarea {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--text-main);
+    background-color: var(--input-bg);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    resize: none; /* Disabling resize to keep UI clean, or use 'vertical' */
+    height: 100px;
+    transition: all 0.2s ease;
+}
+
+textarea:hover {
+    border-color: var(--border-hover);
+    background-color: var(--input-hover);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
 .scroll-content::-webkit-scrollbar { width: 4px; }
 .scroll-content::-webkit-scrollbar-track { background: transparent; }
 .scroll-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
