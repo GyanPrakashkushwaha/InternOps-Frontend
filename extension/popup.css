@@ -64,19 +64,19 @@
 }
 
 body {
-    width: 360px;
-    height: 350px; 
+    /* width: 360px;
+    height: 350px;  */
     background-color: var(--bg-body);
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
     transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
                 height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                 background-color 0.3s ease;
 }
 
 body.expanded {
-    width: 600px;
-    height: 650px;
+    width: 100%;
+    height: 100vh;
 }
 
 #app-container {
@@ -491,4 +491,24 @@ textarea::placeholder {
     background: var(--bg-card);
     color: var(--primary);
     border-color: var(--primary);
+}
+
+#download-updated-cv {
+    color: var(--primary);
+    background-color: rgba(14, 165, 233, 0.08); /* Very light blue bg */
+    border-color: rgba(14, 165, 233, 0.3);
+    margin-right: auto; /* Pushes the chat button to the far right */
+    margin-left: 8px;
+}
+
+#download-updated-cv:hover {
+    background-color: rgba(14, 165, 233, 0.15);
+    border-color: var(--primary);
+    /* transform: translateY(-1px); */
+    box-shadow: 0 2px 5px rgba(14, 165, 233, 0.15);
+}
+
+#download-updated-cv svg {
+    display: inline-block;
+    vertical-align: text-bottom;
 }

@@ -1,3 +1,7 @@
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error));
+  
 // Listen for "START_POLLING" from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "START_POLLING") {
