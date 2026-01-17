@@ -3,6 +3,7 @@ import { processResumeAnalysis } from './api.js';
 
 const main = document.getElementById("main");
 let currentResult = null;
+let ANALYSIS_KEY = "";
 
 // --- INIT ---
 function init() {
@@ -65,6 +66,69 @@ function init() {
     surface.appendChild(resultView);
     main.appendChild(surface);
 
+    // --- RESTORE STATE ON LOAD ---
+    chrome.storage.local.get(['savedJD', 'savedResume'], (result) => {
+        // 1. Restore Job Description
+        if (result.savedJD) {
+            const jdInput = document.getElementById("job-description");
+            if (jdInput) jdInput.value = result.savedJD;
+        }
+
+        // 2. Restore Resume File
+        if (result.savedResume) {
+            try {
+                const file = base64ToFile(result.savedResume.content, result.savedResume.name, result.savedResume.type);
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = document.getElementById("resume-upload");
+                if (fileInput) fileInput.files = dataTransfer.files;
+            } catch (e) {
+                console.error("Error restoring file:", e);
+            }
+        }
+    });
+
+    // --- NEW: CLEAN SAVE LISTENERS ---
+    
+    // 1. JD Listener: Update storage or remove if empty
+    document.getElementById("job-description").addEventListener("input", (e) => {
+        const val = e.target.value;
+        if (val && val.trim().length > 0) {
+            chrome.storage.local.set({ savedJD: val });
+        } else {
+            // If user clears the box, remove from storage
+            chrome.storage.local.remove("savedJD");
+        }
+    });
+
+    // 2. Resume Listener: CLEAR EVERYTHING when new file selected
+    document.getElementById("resume-upload").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        
+        if (file) {
+            // A. Clear previous data (Clean Slate Protocol)
+            // We remove old Resume AND old JD because a new resume implies a new application context
+            await chrome.storage.local.remove(['savedJD', 'savedResume']);
+            
+            // B. Clear the JD UI to match the storage removal
+            document.getElementById("job-description").value = "";
+
+            // C. Save the NEW resume
+            try {
+                const base64 = await fileToBase64(file);
+                chrome.storage.local.set({ 
+                    savedResume: { 
+                        name: file.name, 
+                        type: file.type, 
+                        content: base64 
+                    } 
+                });
+            } catch (err) {
+                console.error("Error saving file:", err);
+            }
+        }
+    });
+
     document.getElementById("analyze").addEventListener("click", handleAnalyze);
 }
 
@@ -85,7 +149,7 @@ async function handleAnalyze() {
     }
 
     const resumeFile = fileInput.files[0]; 
-    const mode = document.getElementById("mode").value; // Get DOM value here
+    const mode = document.getElementById("mode").value; 
     const jdText = jdInput.value.trim()
 
     console.log("File ready for upload:", resumeFile.name);
@@ -191,8 +255,29 @@ function renderResultStructure() {
 
 function renderTabContent(tabName) {
     const contentDiv = document.getElementById("tab-content");
-    // CALL THE IMPORTED UI FUNCTION
     contentDiv.innerHTML = getTabContentHTML(tabName, currentResult);
+}
+
+// --- HELPER FUNCTIONS ---
+
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+function base64ToFile(dataurl, filename, mimeType) {
+    const arr = dataurl.split(',');
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mimeType });
 }
 
 // Start the app

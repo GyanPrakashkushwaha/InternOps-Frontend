@@ -1,1 +1,87 @@
 @import "tailwindcss";
+
+:root {
+  /* --- The InternOps Color Palette --- */
+  --bg-main: #0f172a; 
+  --bg-surface: #1e293b; 
+  --border-color: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent-color: #38bdf8;
+}
+
+/* --- FIX: Standard Dashboard Reset --- */
+/* This ensures the browser window acts as a fixed frame, 
+   allowing your Vue app to handle the scrolling internally. */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevents the body from scrolling (hides double scrollbars) */
+  background-color: var(--bg-main);
+}
+
+body {
+  color: var(--text-primary);
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Reusable Classes --- */
+
+.section-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.dark-input-container {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  padding: 0.75rem;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.dark-input-container:focus-within {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+.file-btn {
+  background-color: #334155;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-right: 0.75rem;
+  cursor: pointer;
+}
+
+/* --- Scrollbar Customization --- */
+/* Applied globally to all scrollable elements */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* Added height for horizontal scrolling if needed */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main); 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569; 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b; 
+}

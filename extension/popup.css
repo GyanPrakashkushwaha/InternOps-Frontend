@@ -499,6 +499,7 @@ textarea::placeholder {
     border-color: rgba(14, 165, 233, 0.3);
     margin-right: auto; /* Pushes the chat button to the far right */
     margin-left: 8px;
+    display: none; /* remove it if want to display the button agian. */
 }
 
 #download-updated-cv:hover {

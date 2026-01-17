@@ -66,3 +66,59 @@ Other requirements
 
 2. Students who can devote 40 hours a week would be preferred.
   `;
+
+
+// JD = `
+// About the internship
+// Perilabs is looking for an analytical intern with a strong computer science background who enjoys solving logical and mathematical problems and building reliable software.
+
+// Selected intern's day-to-day responsibilites include:
+
+// 1. Build backend systems using Python and .NET
+// 2. Implement logic-heavy workflows and simulations
+// 3. Translate mathematical ideas into clean, efficient code
+// 4. Debug, test, and improve system performance
+// 5. Collaborate on system design and architecture
+
+// If you like building systems and thinking deeply about problems, this role is a great fit.
+// Skill(s) required
+// .NET
+// Data Science
+// Mathematics
+// Python
+// Earn certifications in these skills
+// Learn Data Science
+// Learn Python
+// Who can apply
+
+// Only those candidates can apply who:
+
+// 1. are available for full time (in-office) internship
+
+// 2. can start the internship between 15th Jan'26 and 19th Feb'26
+
+// 3. are available for duration of 6 months
+
+// 4. have relevant skills and interests
+
+// Other requirements
+// 1. Background in computer science, engineering, or related field
+
+// 2. Strong logical and mathematical thinking
+
+// 3. Comfortable coding in Python or .NET
+
+// 4. Solid problem-solving and attention to correctness
+
+// 5. Curiosity, ownership mindset, and ability to learn fast
+
+// Perks
+// Certificate
+// Letter of recommendation
+// Informal dress code
+// Number of openings
+// 1
+// About Perilabs
+// We are an IT services company offering tech solutions, analytics, and infrastructure support for the gaming industry.
+
+// `
