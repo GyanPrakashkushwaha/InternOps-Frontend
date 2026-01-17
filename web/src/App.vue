@@ -1,4 +1,5 @@
 <script setup>
+import Home from './Home.vue'
 import { ref, computed } from 'vue';
 
 const searchQuery = ref('')
@@ -51,15 +52,8 @@ const filteredData = computed(() => {
 </script>
 
 <template>
+    
     <div class="h-screen overflow-y-auto bg-[#0f172a] py-10 px-4 sm:px-6 lg:px-8 font-sans text-slate-300">
-        
-        <div class="max-w-7xl mx-auto mb-1 flex flex-col md:flex-row md:items-center justify-between gap-2">
-            <div>
-                <h1 class="text-2xl font-bold text-white tracking-tight">Application Tracker</h1>
-                <p class="mt-1 text-sm text-slate-400">Overview of your current job application pipeline.</p>
-            </div>
-            
-        </div>
 
         <div class="max-w-7xl mx-auto mb-6 sticky top-0 z-10 bg-[#0f172a]/95 backdrop-blur-sm py-4 border-b border-slate-800/50">
             <div class="flex items-center justify-between gap-4">
