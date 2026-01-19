@@ -26,7 +26,7 @@ function analysisReport(id){
 </script>
 
 <template>
-  <aside class="md:flex flex-col w-80 h-full bg-[#0f172a] border-r border-slate-700/50">
+  <aside class="md:flex flex-col w-100 h-170 bg-[#0f172a] border-r border-slate-700/50">
     <div class="p-6 border-b border-slate-700/50">
       <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
         <span>📂</span> History
