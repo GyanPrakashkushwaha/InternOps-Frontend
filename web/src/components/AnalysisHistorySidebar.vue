@@ -46,8 +46,8 @@ function analysisReport(id){
           <span class="text-xs font-mono text-slate-500">#{{ item.id }}</span>
           <span class="text-[10px] font-bold uppercase tracking-wider" :class="item.color">{{ item.status || 'FAIL'}}</span>
         </div>
-        <h3 class="text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{{ item.role }}</h3>
-        <p class="text-xs text-slate-400">{{ item.company }}</p>
+        <h3 class="text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{{ item.company }}</h3>
+        <p class="text-xs text-slate-400">{{ item.role }}</p>
         
         <div :class="{'ring-1 ring-indigo-500': item.id == route.params.id}"></div>
       </div>
