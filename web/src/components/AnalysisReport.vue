@@ -1,35 +1,18 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router'
+import { fetchAnalysisReport } from '../api';
 
 // --- Dummy Data (Matches your JSON structure) ---
-const report = ref({
-  id: "1024",
-  role: "Backend Engineer (Google)",
-  mode: "Strict Compliance (Enterprise ATS)",
-  final_result: {
-    ats_result: {
-      match_score: 85,
-      missing_keywords: ["Kubernetes", "gRPC", "OCR pipelines"],
-      formatting_issues: [],
-      decision: "PASS",
-      feedback: "Good keyword density, but you are missing specific cloud-native terms mentioned in the JD. Your formatting is clean and parseable."
-    },
-    recruiter_result: {
-      career_progression_score: 90,
-      red_flags: [],
-      soft_skills_detected: ["Leadership", "Mentoring", "Cross-functional collaboration"],
-      decision: "PASS",
-      feedback: "Strong career growth shown from Junior to Senior dev. The narrative is clear and the transitions between roles are logical."
-    },
-    hm_result: {
-      tech_depth_score: 78,
-      project_impact_score: 65,
-      stack_alignment: "High (Python/FastAPI matches JD)",
-      decision: "MAYBE",
-      feedback: "Technically sound, but lacks specific metrics. You say 'improved performance' but don't say by how much (e.g., 'reduced latency by 50ms'). Need more concrete proof of work."
-    }
-  }
-});
+const report = ref({});
+
+const route = useRoute()
+console.log(route.params.id)
+onMounted(async () => {
+    // console.log(route.analysis.id)
+    report.value = await fetchAnalysisReport(route.params.id)
+    console.log(report.value)
+})
 
 // --- Helpers ---
 const getDecisionColor = (decision) => {
@@ -63,24 +46,30 @@ const getScoreColor = (score) => {
                         <div class="flex justify-between items-start">
                             <div>
                                 <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">
-                                    📄 Analysis Report <span class="text-slate-500">#{{ report.id }}</span>
+                                    📄 Analysis Report <span class="text-slate-500">
+                                        <!-- #{{ report.id }} -->
+                                         3212
+                                    </span>
                                 </h1>
                                 <div class="space-y-1 mt-3">
                                     <p class="text-sm text-slate-400">
-                                        <strong class="text-slate-200">Target Role:</strong> {{ report.role }}
+                                        <strong class="text-slate-200">Target Role:</strong> 
+                                        <!-- {{ report.role }} -->
+                                          AI Engineer
                                     </p>
                                     <p class="text-sm text-slate-400">
                                         <strong class="text-slate-200">Mode:</strong> 
                                         <span class="inline-flex items-center gap-1.5 ml-1">
-                                            🛡️ {{ report.mode }}
+                                            <!-- 🛡️ {{ report.mode }} -->
+                                             🛡️Strict
                                         </span>
                                     </p>
                                 </div>
                             </div>
                             <div class="hidden sm:flex flex-col items-end">
                                 <div class="px-4 py-1.5 rounded text-sm font-bold border uppercase tracking-wider"
-                                     :class="getDecisionColor(report.final_result.hm_result.decision)">
-                                    {{ report.final_result.hm_result.decision }}
+                                     :class="getDecisionColor(report.value.final_result.hm_result.decision)">
+                                    {{ report.value.final_result.hm_result.decision }}
                                 </div>
                              </div>
                         </div>
@@ -216,28 +205,6 @@ const getScoreColor = (score) => {
                                 <p class="text-slate-400 italic">"{{ report.final_result.hm_result.feedback }}"</p>
                             </li>
                         </ul>
-                    </section>
-
-                    <hr class="border-slate-800" />
-
-                    <section class="pt-2">
-                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                            🤖 AI Coach Actions
-                        </h2>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <button class="flex items-center justify-center gap-2 px-4 py-3 bg-[#38bdf8] hover:bg-sky-400 text-slate-900 text-sm font-bold rounded-lg transition-all shadow-lg shadow-sky-500/20 group">
-                                <span class="text-lg">💬</span> Chat with Analysis
-                            </button>
-                            
-                            <button class="flex items-center justify-center gap-2 px-4 py-3 bg-slate-800 hover:bg-slate-700 text-white text-sm font-bold rounded-lg border border-slate-600 transition-all">
-                                <span class="text-lg">📝</span> Auto-Fix Resume
-                            </button>
-                            
-                            <button class="flex items-center justify-center gap-2 px-4 py-3 bg-slate-800 hover:bg-rose-500/20 hover:text-rose-400 hover:border-rose-500/50 text-slate-400 text-sm font-bold rounded-lg border border-slate-700 transition-all">
-                                <span class="text-lg">🗑️</span> Delete
-                            </button>
-                        </div>
                     </section>
 
                 </div>
