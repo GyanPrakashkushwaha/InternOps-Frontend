@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-// Mocking the API for the visual demo functionality
-// import { analyzeApplication } from '../api'; 
-const analyzeApplication = () => new Promise(r => setTimeout(() => r({ id: 123 }), 2000));
+
+// Define your backend URL here (or import from a config file)
+const API_BASE_URL = "https://internops-2.onrender.com"; // Update this port if necessary
 
 const router = useRouter();
 
@@ -51,26 +51,50 @@ const startAnalysis = async () => {
     isLoading.value = true;
     loadingProgress.value = 0;
     
-    // Non-linear progress simulation for realism
+    // Simulate progress to keep user engaged while the synchronous backend processes
+    // The backend might take 10-60 seconds to respond.
     progressInterval = setInterval(() => {
         if (loadingProgress.value < 90) {
-            const increment = Math.random() * 5;
+            // Slow down as we get higher to prevent reaching 100% prematurely
+            const increment = Math.max(0.5, (90 - loadingProgress.value) / 50); 
             loadingProgress.value = Math.min(loadingProgress.value + increment, 90);
         }
     }, 200);
 
     try {
-        const result = await analyzeApplication(file.value, jobDescription.value, strategy.value);
+        // 1. Prepare Form Data for FastAPI (matches 'file: UploadFile' and 'job_description: Form')
+        const formData = new FormData();
+        formData.append('file', file.value);
+        formData.append('job_description', jobDescription.value);
+
+        // 2. Call the synchronous endpoint
+        const response = await fetch(`${API_BASE_URL}/analyze/${strategy.value}`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // 3. Complete the progress bar
         loadingProgress.value = 100;
+        clearInterval(progressInterval);
         
-        // Slight delay to show 100% state
+        // 4. Navigate to report using the returned analysis_id
         setTimeout(() => {
-            if (result && result.id) router.push({ name: 'AnalysisReport', params: { id: result.id } });
-            else router.push('/'); 
+            if (result && result.analysis_id) {
+                router.push({ name: 'AnalysisReport', params: { id: result.analysis_id } });
+            } else {
+                throw new Error("Invalid response structure");
+            }
         }, 800);
+
     } catch (error) {
-        console.error(error);
-        alert("Analysis failed.");
+        console.error("Analysis Error:", error);
+        alert(`Analysis failed: ${error.message}`);
         isLoading.value = false;
         clearInterval(progressInterval);
         loadingProgress.value = 0;

@@ -11,110 +11,13 @@ const router = useRouter()
 const tabs = [
   { label: 'All Applications', value: 'ALL' },
   { label: 'Hired', value: 'HIRE' },
-  { label: 'Rejected', value: 'NO_HIRE' },
+  { label: 'Rejected', value: null },
   { label: 'Pending', value: 'MAYBE' }
 ]
 
 onMounted(async () => {
-    // I assume this API now returns the joined data from analysis + job_metadata + ats + recruiter
     data.value = await fetchHistory()
-    // data.value = [
-    //     // 1. The "Perfect Match" (Hired)
-    //     {
-    //         id: 101,
-    //         created_at: '2023-10-24T14:30:00Z',
-    //         mode: 'Cold Email',
-    //         status: 'HIRE',
-            
-    //         // Job Metadata
-    //         job_title: 'Senior Frontend Engineer',
-    //         company_name: 'TechFlow Systems',
-    //         location: 'San Francisco, CA (Remote)',
-    //         salary_range: '$140k - $160k',
-    //         work_mode: 'Remote',
-    //         required_skills: ['Vue.js', 'TypeScript', 'Tailwind', 'System Design'],
-            
-    //         // Scores & Analysis
-    //         match_score: 95,
-    //         missing_keywords: [], // Empty to test "No keyword issues"
-    //         tech_depth_score: 92,
-    //         career_progression_score: 90,
-    //         stack_alignment: 'Perfect Match',
-    //         soft_skills: ['Leadership', 'Communication']
-    //     },
-        
-    //     // 2. The "Keyword Mismatch" (Rejected)
-    //     {
-    //         id: 102,
-    //         created_at: '2023-10-22T09:15:00Z',
-    //         mode: 'LinkedIn Easy Apply',
-    //         status: 'NO_HIRE',
-            
-    //         // Job Metadata
-    //         job_title: 'Full Stack Developer',
-    //         company_name: 'Legacy Corp',
-    //         location: 'New York, NY',
-    //         salary_range: null, // Testing null handling
-    //         work_mode: 'Hybrid',
-    //         required_skills: ['Java', 'Spring Boot', 'Angular', 'AWS'],
-            
-    //         // Scores & Analysis
-    //         match_score: 45,
-    //         missing_keywords: ['Spring Boot', 'Microservices', 'Jenkins', 'Hibernate'], // Testing the missing keywords badge
-    //         tech_depth_score: 60,
-    //         career_progression_score: 50,
-    //         stack_alignment: 'Backend heavy',
-    //         soft_skills: []
-    //     },
-
-    //     // 3. The "Potential" (Pending/Maybe)
-    //     {
-    //         id: 103,
-    //         created_at: '2023-10-20T11:45:00Z',
-    //         mode: 'Referral',
-    //         status: 'MAYBE',
-            
-    //         // Job Metadata
-    //         job_title: 'UI/UX Engineer',
-    //         company_name: 'Creative Studio',
-    //         location: 'London, UK',
-    //         salary_range: '£60k - £75k',
-    //         work_mode: 'On-site',
-    //         required_skills: ['React', 'Figma', 'Motion Design'],
-            
-    //         // Scores & Analysis
-    //         match_score: 78,
-    //         missing_keywords: ['Figma'],
-    //         tech_depth_score: 85,
-    //         career_progression_score: 80,
-    //         stack_alignment: 'Strong Frontend',
-    //         soft_skills: ['Creativity']
-    //     },
-
-    //     // 4. The "Incomplete Data" (Testing Fallbacks)
-    //     {
-    //         id: 104,
-    //         created_at: '2023-10-18T16:20:00Z',
-    //         mode: 'Recruiter Reachout',
-    //         status: 'PENDING',
-            
-    //         // Job Metadata (Missing title/company to test UI robustness)
-    //         job_title: null, 
-    //         company_name: 'Stealth Startup', 
-    //         location: null,
-    //         salary_range: null,
-    //         work_mode: null,
-    //         required_skills: [],
-            
-    //         // Scores & Analysis
-    //         match_score: 0,
-    //         missing_keywords: ['Everything'],
-    //         tech_depth_score: 0,
-    //         career_progression_score: 0,
-    //         stack_alignment: null,
-    //         soft_skills: []
-    //     }
-    // ]
+    console.log(data.value)
 })
 // --- UTILITIES ---
 
@@ -122,7 +25,7 @@ const getStatusStyles = (status) => {
     if (!status) return 'bg-slate-700/50 text-slate-400 border-slate-600';
     switch (status.toLowerCase()) {
     case 'hire': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]';
-    case 'no_hire':
+    case null:
     case 'reject': return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
     case 'maybe':
     case 'pending': return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
