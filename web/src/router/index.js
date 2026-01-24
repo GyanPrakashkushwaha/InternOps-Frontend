@@ -21,7 +21,7 @@ const routes = [
     },
     {
         path: "/analysis", 
-        redirect: "/analysis/latest" 
+        redirect: "/analysis/2" 
     },
     {
         path: "/analysis/:id", 

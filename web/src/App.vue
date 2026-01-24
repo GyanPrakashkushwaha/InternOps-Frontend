@@ -1,6 +1,7 @@
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
+const router = useRouter()
 </script>
 
 <template>
@@ -10,23 +11,28 @@ const route = useRoute();
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           
-          <div class="flex items-center gap-3">
-            <div class="relative group cursor-pointer">
-              <div class="absolute -inset-2 rounded-full bg-gradient-to-r from-[#38bdf8] to-indigo-500 opacity-20 group-hover:opacity-40 blur-md transition duration-500"></div>
+          <button class="cursor-pointer"
+          @click="() => router.push({'path': '/'})">
+            <div class="flex items-center gap-3">
+              <div class="relative group">
+                <div class="absolute -inset-2 rounded-full bg-gradient-to-r from-[#38bdf8] to-indigo-500 opacity-20 group-hover:opacity-40 blur-md transition duration-500"></div>
+                
+                <img 
+                  src="../assets/logo-removebg.png" 
+                  alt="Company Logo" 
+                  class="relative h-9 w-auto object-contain"
+                />
+                <!-- <span class="text-[2px]">INTERNOPS</span> -->
+              </div>
               
-              <img 
-                src="../assets/logo-removebg.png" 
-                alt="Company Logo" 
-                class="relative h-9 w-auto object-contain transform transition-transform duration-300 group-hover:scale-105"
-              />
+              <div class="md:block">
+                <h1 class="text-xl font-bold tracking-tight text-slate-100">
+                  <span class="ring-[#38bdf8]/50">Application</span> <span class="text-[#38bdf8]">Tracker</span>
+                </h1>
+              </div>
             </div>
-            
-            <div class="hidden md:block">
-              <h1 class="text-xl font-bold tracking-tight text-slate-100">
-                Application<span class="text-[#38bdf8]">Tracker</span>
-              </h1>
-            </div>
-          </div>
+          </button>
+
 
           <div class="flex items-center gap-1 bg-[#1e293b]/50 p-1.5 rounded-lg border border-slate-800/50 backdrop-blur-sm">
             
@@ -51,7 +57,6 @@ const route = useRoute();
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               ]"
             >
-              <span v-if="$route.path !== '/new'" class="text-[#38bdf8] font-black text-sm">+</span> 
               New Analysis
             </router-link>
 

@@ -44,7 +44,7 @@ const validateAndSetFile = (selectedFile) => {
     }
 };
 
-// --- Analysis Logic ---
+
 const startAnalysis = async () => {
     if (!file.value || !jobDescription.value.trim()) return;
 
@@ -107,13 +107,9 @@ onUnmounted(() => clearInterval(progressInterval));
 <template>
     <div class="flex items-center justify-center min-h-screen bg-[#0f172a] text-slate-300 font-sans selection:bg-[#38bdf8] selection:text-[#0f172a] pt-0">
         
-        <div class="absolute inset-0 pointer-events-none">
-            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-            <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#38bdf8]/5 blur-[120px] rounded-full mix-blend-screen animate-pulse-slow"></div>
-            <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[100px] rounded-full mix-blend-screen"></div>
-        </div>
+        
 
-        <div class="relative w-full max-w-5xl h-[600px] bg-[#0f172a]/80 backdrop-blur-2xl border border-white/5 ring-1 ring-white/5 rounded-xl shadow-2xl flex flex-col group">
+        <div class="relative w-full max-w-5xl h-[600px] bg-[#1e293b]/40 backdrop-blur-2xl border border-white/5 ring-1 ring-white/5 rounded-xl shadow-2xl flex flex-col group">
             
             <transition name="fade">
                 <div v-if="isLoading" class="absolute inset-0 z-50 bg-[#0f172a]/90 backdrop-blur-sm flex flex-col items-center justify-center">
