@@ -1,7 +1,15 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
 const route = useRoute();
 const router = useRouter()
+const headerName = computed(
+  () => {
+    if (route.path == "/new") return "Analyzer"
+    return "Tracker"
+  }
+)
+
 </script>
 
 <template>
@@ -27,7 +35,7 @@ const router = useRouter()
               
               <div class="md:block">
                 <h1 class="text-xl font-bold tracking-tight text-slate-100">
-                  <span class="ring-[#38bdf8]/50">Application</span> <span class="text-[#38bdf8]">Tracker</span>
+                  <span class="ring-[#38bdf8]/50">Application</span> <span class="text-[#38bdf8]">{{ headerName }}</span>
                 </h1>
               </div>
             </div>
@@ -53,7 +61,7 @@ const router = useRouter()
               class="px-5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out flex items-center gap-2"
               :class="[
                 $route.path === '/new' 
-                  ? 'bg-[#38bdf8] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.3)] ring-1 ring-[#38bdf8]/50 transform scale-105' 
+                  ? 'bg-[#38bdf8] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.3)] ring-1 ring-[#38bdf8]/50 transform scale-105'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               ]"
             >
