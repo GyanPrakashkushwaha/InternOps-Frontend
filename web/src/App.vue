@@ -1,3 +1,7 @@
+<script setup>
+import { useRoute } from 'vue-router';
+const route = useRoute();
+</script>
 
 <template>
   <div class="min-h-screen bg-[#0f172a] text-slate-300 font-sans selection:bg-[#38bdf8] selection:text-slate-900 flex flex-col">
@@ -39,15 +43,28 @@
             </router-link>
 
             <router-link 
-              to="/analysis" 
-              class="px-5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out"
+              to="/new" 
+              class="px-5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out flex items-center gap-2"
               :class="[
-                $route.path === '/analysis/123' 
+                $route.path === '/new' 
                   ? 'bg-[#38bdf8] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.3)] ring-1 ring-[#38bdf8]/50 transform scale-105' 
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               ]"
             >
-              Analysis
+              <span v-if="$route.path !== '/new'" class="text-[#38bdf8] font-black text-sm">+</span> 
+              New Analysis
+            </router-link>
+
+            <router-link 
+              to="/analysis/latest" 
+              class="px-5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out"
+              :class="[
+                $route.path.includes('/analysis') 
+                  ? 'bg-[#38bdf8] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.3)] ring-1 ring-[#38bdf8]/50 transform scale-105' 
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+              ]"
+            >
+              Report
             </router-link>
             
           </div>
@@ -68,14 +85,12 @@
 </template>
 
 <style>
-/* Global Reset to ensure full height */
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #0f172a; /* Matches Slate 950 */
+  background-color: #0f172a; 
 }
 
-/* Custom Scrollbar for the whole app */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -91,7 +106,6 @@ html, body {
   background: #475569; 
 }
 
-/* Page Transition Effects */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease, transform 0.2s ease;
@@ -99,11 +113,11 @@ html, body {
 
 .fade-enter-from {
   opacity: 0;
-  transform: translateY(10px); /* Slide up effect on enter */
+  transform: translateY(10px); 
 }
 
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(-10px); /* Slide up effect on leave */
+  transform: translateY(-10px); 
 }
 </style>
