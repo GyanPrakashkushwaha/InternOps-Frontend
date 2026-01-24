@@ -9,7 +9,7 @@ const isTyping = ref(false);
 const messages = ref([
   { 
     id: 1, 
-    sender: 'ai', 
+    sender: 'ai',
     text: 'I noticed the candidate lacks concrete metrics in the "Hiring Manager" section. Would you like me to generate some interview questions to probe this?' 
   },
   { 
