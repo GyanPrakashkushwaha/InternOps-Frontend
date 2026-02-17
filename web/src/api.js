@@ -1,6 +1,5 @@
 const BASE_URL = "https://internops-2.onrender.com"
 
-
 export async function fetchHistory(){
     try{
         const res = await fetch(`${BASE_URL}/web/dashboard/history`)
@@ -42,8 +41,6 @@ export async function fetchAnalysisReport(id) {
         return {}
     }
 }
-
-// --- NEW: Analysis Integration Logic (Ported from Extension) ---
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 

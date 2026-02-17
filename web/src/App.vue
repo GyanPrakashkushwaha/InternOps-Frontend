@@ -69,7 +69,7 @@ const headerName = computed(
             </router-link>
 
             <router-link 
-              to="/analysis/latest" 
+              to="/analysis" 
               class="px-5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out"
               :class="[
                 $route.path.includes('/analysis') 

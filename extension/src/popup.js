@@ -224,7 +224,7 @@ function renderResultStructure() {
                 </svg>
                 JD-Optimized CV
                 </button>
-            <button id="open-chat-btn" class="nav-action-btn">Open chat in new tab</button>
+            <button id="open-chat-btn" class="nav-action-btn">Open Applications Dashboard</button>
         </div>
 
         <div class="tabs-header">
@@ -239,7 +239,7 @@ function renderResultStructure() {
     document.getElementById("back-btn").addEventListener("click", handleBack);
 
     document.getElementById("open-chat-btn").addEventListener("click", () => {
-        window.open("http://localhost:5173/", "_blank");
+        window.open("https://intern-ops-frontend.vercel.app/", "_blank");
     });
 
     container.querySelectorAll('.tab-btn').forEach(btn => {
